@@ -4,7 +4,7 @@ class Client {
     #isStreamingAudio = false;
     #isStreamingVideo = false;
     #isStreamingScreen = false;
-    #hasScribbleBoard = false;
+
     #lobby;
 
     constructor(socket, lobby, isAdmin = false) {
