@@ -1,6 +1,9 @@
 const enums = {
     connection: {
-
+        join: 'joined room',
+        created: 'created room',
+        newAdmin: 'new admin',
+        leave: 'leave room'
     },
     start: {
         video: 'start video',
