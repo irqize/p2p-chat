@@ -4,9 +4,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = {
     entry: './index.js',
+    devtool: 'eval-source-map',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        publicPath: "/"
     },
     module: {
         rules: [
@@ -45,7 +47,10 @@ const config = {
         new HtmlWebpackPlugin({
             template: 'index.html'
         })
-    ]
+    ],
+    devServer: {
+        historyApiFallback: true
+    }
 };
 
 module.exports = config;

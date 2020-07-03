@@ -27,7 +27,9 @@ class Lobby {
     join(socket) {
         socket.join(this.id);
         this.users.push(new Client(creatorSocket, this, false));
-        // TODO: emit client joining
+
+        // Emit client joining
+        this.io.to(this.id).emit(lobbyEventsEnum.connection.join, socket.id);
     }
 
     leave(client) {
@@ -39,12 +41,14 @@ class Lobby {
                     return
                 }
 
-                // TODO: emit client leaving
+                // Emit client leaving
+                this.io.to(this.id).emit(lobbyEventsEnum.connection.leave, socket.id);
 
                 if (client.isAdmin) {
                     this.users[0].setAdmin();
                     this.admin = this.users[0];
-                    // TODO: emit new admin
+                    // Emit a new adming
+                    this.io.to(this.id).emit(lobbyEventsEnum.connection.newAdmin, socket.id);
                 }
             }
         }
