@@ -3,7 +3,8 @@ const enums = {
     createLobbyError: 'create lobby error',
     createLobbyErrorTypes: {
         unknown: 'unknown error',
-        alreadyInLobby: 'already in lobby'
+        alreadyInLobby: 'already in lobby',
+        nameNotSpecified: 'name wasnt specified'
     },
 
     joinLobby: 'join lobby',
@@ -13,7 +14,8 @@ const enums = {
         lobbyFull: 'lobby full',
         doesntExist: 'lobby doesnt exist',
         alreadyInLobby: 'already in lobby',
-        badPassword: 'bad password'
+        badPassword: 'bad password',
+        nameNotSpecified: 'name wasnt specified'
     }
 }
 

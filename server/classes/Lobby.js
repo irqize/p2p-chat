@@ -10,7 +10,7 @@ class Lobby {
     maxCapacity;
     onDestroy;
 
-    constructor(id, creatorSocket, maxCapacity, io, onDestroy, password = null) {
+    constructor(id, creatorSocket, creatorName, maxCapacity, io, onDestroy, password = null) {
         this.id = id;
         this.io = io;
 
@@ -18,20 +18,30 @@ class Lobby {
         this.maxCapacity = maxCapacity;
         this.onDestroy = onDestroy;
 
-        this.admin = new Client(creatorSocket, this, true);
+        this.admin = new Client(creatorSocket, creatorName, this, true);
         creatorSocket.join(this.id);
         creatorSocket.emit(lobbyEventsEnum.connection.created, id);
         this.users.push(this.admin);
     }
 
-    join(socket) {
+    join(socket, name) {
         socket.join(this.id);
-        const members = this.users.map(user => user.socket.id);
-        this.users.push(new Client(socket, this, false));
+        const members = this.users.map(user => ({
+            id: user.socket.id,
+            name: user.name,
+            isStreamingAudio: user.isStreamingAudio,
+            isStreamingVideo: user.isStreamingVideo
+        }));
+        this.users.push(new Client(socket, name, this, false));
 
         // Emit client joining
-        this.io.to(this.id).emit(lobbyEventsEnum.members.newMember, socket.id);
-        socket.emit(lobbyEventsEnum.connection.join, socket.id, members);
+        this.io.to(this.id).emit(lobbyEventsEnum.members.newMember, {
+            id: socket.id,
+            name: name,
+            isStreamingAudio: true,
+            isStreamingVideo: true
+        });
+        socket.emit(lobbyEventsEnum.connection.join, members, this.admin.socket.id);
     }
 
     leave(socket) {

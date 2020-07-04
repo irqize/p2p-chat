@@ -3,16 +3,16 @@ const lobbyEventsEnum = require('../../shared/LobbyEventsEnum');
 class Client {
     socket;
 
-    isStreamingAudio = false;
-    isStreamingVideo = false;
-    isStreamingScreen = false;
-
+    isStreamingAudio = true;
+    isStreamingVideo = true;
+    name;
     lobby;
 
-    constructor(socket, lobby, isAdmin = false) {
+    constructor(socket, name, lobby, isAdmin = false) {
         this.socket = socket;
         this.lobby = lobby;
         this.isAdmin = isAdmin;
+        this.name = name;
 
         socket.on('disconnect', () => {
             lobby.leave(this);

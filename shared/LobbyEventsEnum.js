@@ -18,13 +18,11 @@ const enums = {
     },
     start: {
         video: 'start video',
-        voice: 'start voice',
-        screenshare: 'start screenshare'
+        voice: 'start voice'
     },
     stop: {
         video: 'stop video',
-        voice: 'stop voice',
-        screenshare: 'stop screenshare'
+        voice: 'stop voice'
     }
 }
 

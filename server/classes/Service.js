@@ -19,13 +19,13 @@ class Service {
 
         this.io.on('connection', socket => {
             socket.inLobby = false;
-            socket.on(enums.createLobby, (maxCapacity, password) => this.createLobby(socket, maxCapacity, password));
-            socket.on(enums.joinLobby, (id, password) => this.joinLobby(socket, id, password));
+            socket.on(enums.createLobby, (name, maxCapacity, password) => this.createLobby(socket, name, maxCapacity, password));
+            socket.on(enums.joinLobby, (name, id, password) => this.joinLobby(socket, name, id, password));
         });
         console.log('Listening for incoming connections on port ' + this.port);
     }
 
-    joinLobby(socket, id, password = null) {
+    joinLobby(socket, name, id, password = null) {
         if (typeof id != "string") {
             return socket.emit(enums.joinLobbyError, enums.joinLobbyErrorTypes.badId);
         }
@@ -41,22 +41,28 @@ class Service {
         if (!this.lobbies.get(id).authenticate(password)) {
             return socket.emit(enums.joinLobbyError, enums.joinLobbyErrorTypes.badPassword);
         }
+        if (typeof name != 'string' || !name) {
+            return socket.emit(enums.joinLobbyError, enums.joinLobbyErrorTypes.nameNotSpecified);
+        }
 
-        this.lobbies.get(id).join(socket);
+        this.lobbies.get(id).join(socket, name);
     }
 
-    createLobby(socket, maxCapacity, password = null) {
+    createLobby(socket, name, maxCapacity, password = null) {
         if (maxCapacity < 2 || !(password === null || typeof password == 'string')) {
             return socket.emit(enums.createLobbyError, enums.createLobbyErrorTypes.unknown);
         }
         if (socket.inLobby) {
             return socket.emit(enums.createLobbyError, enums.createLobbyErrorTypes.alreadyInLobby);
         }
+        if (typeof name != 'string' || !name) {
+            return socket.emit(enums.createLobbyError, enums.createLobbyErrorTypes.nameNotSpecified);
+        }
 
         let id = v4();
         while (this.lobbies.has(id)) id = v4();
 
-        this.lobbies.set(id, new Lobby(id, socket, maxCapacity, this.io, () => {
+        this.lobbies.set(id, new Lobby(id, socket, name, maxCapacity, this.io, () => {
             this.lobbies.delete(id);
         }, password));
 
