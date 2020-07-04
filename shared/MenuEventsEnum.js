@@ -2,6 +2,7 @@ const enums = {
     createLobby: 'create lobby',
     createLobbyError: 'create lobby error',
     createLobbyErrorTypes: {
+        unknown: 'unknown error',
         alreadyInLobby: 'already in lobby'
     },
 

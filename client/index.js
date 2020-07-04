@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import "./styles.css";
 import store from './store'
 
-import JoinScreen from './src/joinScreen'
+import App from './src/App'
 import Lobby from './src/lobby'
 
 ReactDOM.render((
@@ -17,7 +17,7 @@ ReactDOM.render((
                     <Lobby />
                 </Route>
                 <Route path="/">
-                    <JoinScreen />
+                    <App />
                 </Route>
             </Switch>
         </BrowserRouter>

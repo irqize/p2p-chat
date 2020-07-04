@@ -26,15 +26,17 @@ class Lobby {
 
     join(socket) {
         socket.join(this.id);
-        this.users.push(new Client(creatorSocket, this, false));
+        const members = this.users.map(user => user.socket.id);
+        this.users.push(new Client(socket, this, false));
 
         // Emit client joining
-        this.io.to(this.id).emit(lobbyEventsEnum.connection.join, socket.id);
+        this.io.to(this.id).emit(lobbyEventsEnum.members.newMember, socket.id);
+        socket.emit(lobbyEventsEnum.connection.join, socket.id, members);
     }
 
-    leave(client) {
+    leave(socket) {
         for (let i = 0; i < this.users.length; i++) {
-            if (this.users[i] == client) {
+            if (this.users[i] == socket) {
                 this.users.splice(i, 1);
                 if (this.users.length === 0) {
                     this.onDestroy();
@@ -44,10 +46,10 @@ class Lobby {
                 // Emit client leaving
                 this.io.to(this.id).emit(lobbyEventsEnum.connection.leave, socket.id);
 
-                if (client.isAdmin) {
+                if (socket.isAdmin) {
                     this.users[0].setAdmin();
                     this.admin = this.users[0];
-                    // Emit a new adming
+                    // Emit a new admin
                     this.io.to(this.id).emit(lobbyEventsEnum.connection.newAdmin, socket.id);
                 }
             }

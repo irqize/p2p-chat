@@ -20,7 +20,7 @@ class Service {
         this.io.on('connection', socket => {
             socket.inLobby = false;
             socket.on(enums.createLobby, (maxCapacity, password) => this.createLobby(socket, maxCapacity, password));
-            socket.on(enums.joinLobby, (id) => this.joinLobby(socket, id));
+            socket.on(enums.joinLobby, (id, password) => this.joinLobby(socket, id, password));
         });
         console.log('Listening for incoming connections on port ' + this.port);
     }
@@ -32,7 +32,7 @@ class Service {
         if (socket.inLobby) {
             return socket.emit(enums.joinLobbyError, enums.joinLobbyErrorTypes.alreadyInLobby);
         }
-        if (this.lobbies.has(id)) {
+        if (!this.lobbies.has(id)) {
             return socket.emit(enums.joinLobbyError, enums.joinLobbyErrorTypes.doesntExist);
         }
         if (this.lobbies.get(id).isFull()) {
@@ -46,6 +46,9 @@ class Service {
     }
 
     createLobby(socket, maxCapacity, password = null) {
+        if (maxCapacity < 2 || !(password === null || typeof password == 'string')) {
+            return socket.emit(enums.createLobbyError, enums.createLobbyErrorTypes.unknown);
+        }
         if (socket.inLobby) {
             return socket.emit(enums.createLobbyError, enums.createLobbyErrorTypes.alreadyInLobby);
         }

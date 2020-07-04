@@ -5,6 +5,9 @@ const enums = {
         newAdmin: 'new admin',
         leave: 'leave room'
     },
+    members: {
+        newMember: 'new member'
+    },
     peerConnection: {
         sendOffer: 'send offer',
         sendAnswer: 'send answer',
