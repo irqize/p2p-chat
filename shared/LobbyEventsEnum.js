@@ -6,7 +6,8 @@ const enums = {
         leave: 'leave room'
     },
     members: {
-        newMember: 'new member'
+        newMember: 'new member',
+        memberLeft: 'member left'
     },
     peerConnection: {
         sendOffer: 'send offer',

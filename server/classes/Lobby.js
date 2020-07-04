@@ -44,9 +44,9 @@ class Lobby {
         socket.emit(lobbyEventsEnum.connection.join, members, this.admin.socket.id);
     }
 
-    leave(socket) {
+    leave(user) {
         for (let i = 0; i < this.users.length; i++) {
-            if (this.users[i] == socket) {
+            if (this.users[i] == user) {
                 this.users.splice(i, 1);
                 if (this.users.length === 0) {
                     this.onDestroy();
@@ -54,13 +54,13 @@ class Lobby {
                 }
 
                 // Emit client leaving
-                this.io.to(this.id).emit(lobbyEventsEnum.connection.leave, socket.id);
+                this.io.to(this.id).emit(lobbyEventsEnum.members.memberLeft, user.id);
 
-                if (socket.isAdmin) {
+                if (user.isAdmin) {
                     this.users[0].setAdmin();
                     this.admin = this.users[0];
                     // Emit a new admin
-                    this.io.to(this.id).emit(lobbyEventsEnum.connection.newAdmin, socket.id);
+                    this.io.to(this.id).emit(lobbyEventsEnum.connection.newAdmin, this.admin.socket.id);
                 }
             }
         }

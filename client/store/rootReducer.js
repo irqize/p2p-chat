@@ -1,8 +1,5 @@
-import { combineReducers } from 'redux'
 import lobbyEvents from '../../shared/LobbyEventsEnum'
 import menuEvents from '../../shared/MenuEventsEnum'
-import lobby from '../src/lobby';
-import socketMiddleware from './socketMiddleware';
 
 const initialState = {
     inLobby: false,
@@ -52,6 +49,19 @@ export default function (state = initialState, action) {
             newState = { ...state };
             newState.lobby.members = [...state.lobby.members];
             newState.lobby.members.push(action.member);
+
+            return newState;
+
+        case lobbyEvents.members.memberLeft:
+            newState = { ...state };
+            newState.lobby.members = state.lobby.members.filter(user => user.id !== action.id);
+
+            return newState;
+
+        case lobbyEvents.connection.newAdmin:
+            newState = { ...state };
+            newState.lobby.members = [...state.lobby.members];
+            newState.lobby.admin = action.id;
 
             return newState;
         default:

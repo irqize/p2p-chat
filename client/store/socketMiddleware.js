@@ -24,6 +24,9 @@ const socketMiddleware = () => {
                     action.admin = socket.id;
                     action.myId = socket.id;
                     removeListeners();
+
+                    setUpListenersForLobby(socket, dispatch);
+
                     return next(action);
                 });
                 socket.on(menuEvents.createLobbyError, error => {
@@ -32,12 +35,8 @@ const socketMiddleware = () => {
                     removeListeners();
                     return next(action);
                 });
-
-
-                socket.on(lobbyEvents.members.newMember, member => {
-                    dispatch({ type: lobbyEvents.members.newMember, member: member });
-                });
                 break;
+
             case menuEvents.joinLobby:
                 let { id } = action;
                 password = action.password;
@@ -57,9 +56,7 @@ const socketMiddleware = () => {
 
                     removeListeners();
 
-                    socket.on(lobbyEvents.members.newMember, member => {
-                        dispatch({ type: lobbyEvents.members.newMember, member: member });
-                    });
+                    setUpListenersForLobby(socket, dispatch);
 
                     return next(action);
                 });
@@ -70,19 +67,37 @@ const socketMiddleware = () => {
                     removeListeners();
                     return next(action);
                 });
-
-
-
                 break;
+
             case lobbyEvents.connection.leave:
                 if (!getState().inLobby) return next(action);
                 socket.emit(lobbyEvents.connection.leave);
+
+                //Disable listeners for the lobby we're leaving
                 socket.off(lobbyEvents.members.newMember);
+                socket.off(lobbyEventsEnum.connection.leave);
+                socket.off(lobbyEventsEnum.connection.newAdmin);
+
                 return next(action);
+
             default:
                 return next(action);
         }
     };
+}
+
+function setUpListenersForLobby(socket, dispatch) {
+    socket.on(lobbyEvents.members.newMember, member => {
+        dispatch({ type: lobbyEvents.members.newMember, member: member });
+    });
+
+    socket.on(lobbyEvents.members.memberLeft, id => {
+        dispatch({ type: lobbyEvents.members.memberLeft, id });
+    });
+
+    socket.on(lobbyEvents.connection.newAdmin, id => {
+        dispatch({ type: lobbyEvents.connection.newAdmin, id });
+    });
 }
 
 export default socketMiddleware;

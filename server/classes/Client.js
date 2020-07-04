@@ -2,7 +2,7 @@ const lobbyEventsEnum = require('../../shared/LobbyEventsEnum');
 
 class Client {
     socket;
-
+    id;
     isStreamingAudio = true;
     isStreamingVideo = true;
     name;
@@ -13,6 +13,7 @@ class Client {
         this.lobby = lobby;
         this.isAdmin = isAdmin;
         this.name = name;
+        this.id = socket.id;
 
         socket.on('disconnect', () => {
             lobby.leave(this);
