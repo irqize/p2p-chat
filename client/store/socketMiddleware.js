@@ -98,6 +98,22 @@ function setUpListenersForLobby(socket, dispatch) {
     socket.on(lobbyEvents.connection.newAdmin, id => {
         dispatch({ type: lobbyEvents.connection.newAdmin, id });
     });
+
+    socket.on(lobbyEvents.peerConnection.offerRequested, () => {
+
+    });
+
+    socket.on(lobbyEvents.peerConnection.gotAnswer, (from, answer) => {
+
+    });
+
+    socket.on(lobbyEvents.peerConnection.gotCandidate, (from, candidate) => {
+
+    });
+
+    socket.on(lobbyEvents.peerConnection.gotOffer, (from, offer) => {
+
+    })
 }
 
 export default socketMiddleware;

@@ -30,7 +30,9 @@ class Lobby {
             id: user.socket.id,
             name: user.name,
             isStreamingAudio: user.isStreamingAudio,
-            isStreamingVideo: user.isStreamingVideo
+            isStreamingVideo: user.isStreamingVideo,
+            peerConnection: null,
+            mediaStream: null
         }));
         this.users.push(new Client(socket, name, this, false));
 
@@ -39,7 +41,10 @@ class Lobby {
             id: socket.id,
             name: name,
             isStreamingAudio: true,
-            isStreamingVideo: true
+            isStreamingVideo: true,
+            peerConnection: null,
+            mediaStream: null,
+
         });
         socket.emit(lobbyEventsEnum.connection.join, members, this.admin.socket.id);
     }
@@ -76,6 +81,21 @@ class Lobby {
 
     isFull() {
         return this.users.length >= this.maxCapacity;
+    }
+
+    hasUser(userId) {
+        for (let i = 0; i < this.users.length; i++) {
+            if (this.users[i].id === userId) return true;
+        }
+
+        return false;
+    }
+
+    getUser(userId) {
+        for (let i = 0; i < this.users.length; i++) {
+            if (this.users[i].id === userId) return this.users[i];
+        }
+
     }
 }
 

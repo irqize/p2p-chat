@@ -15,7 +15,8 @@ const enums = {
         sendCandidate: 'send candidate',
         gotOffer: 'got offer',
         gotAnswer: 'got answer',
-        gotCandidate: 'got candidate'
+        gotCandidate: 'got candidate',
+        offerRequested: 'offer requested'
     },
     start: {
         video: 'start video',
