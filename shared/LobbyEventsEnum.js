@@ -10,6 +10,7 @@ const enums = {
         memberLeft: 'member left'
     },
     peerConnection: {
+        create: 'create',
         sendOffer: 'send offer',
         sendAnswer: 'send answer',
         sendCandidate: 'send candidate',

@@ -34,19 +34,23 @@ class Lobby {
             peerConnection: null,
             mediaStream: null
         }));
-        this.users.push(new Client(socket, name, this, false));
 
         // Emit client joining
         this.io.to(this.id).emit(lobbyEventsEnum.members.newMember, {
             id: socket.id,
             name: name,
-            isStreamingAudio: true,
-            isStreamingVideo: true,
+            isStreamingAudio: false,
+            isStreamingVideo: false,
             peerConnection: null,
-            mediaStream: null,
-
+            mediaStream: null
         });
         socket.emit(lobbyEventsEnum.connection.join, members, this.admin.socket.id);
+
+        const client = new Client(socket, name, this, false);
+        this.users.forEach(user => {
+            client.requestOffer(user.id);
+        });
+        this.users.push(client);
     }
 
     leave(user) {

@@ -3,8 +3,8 @@ const lobbyEventsEnum = require('../../shared/LobbyEventsEnum');
 class Client {
     socket;
     id;
-    isStreamingAudio = true;
-    isStreamingVideo = true;
+    isStreamingAudio = false;
+    isStreamingVideo = false;
     name;
     lobby;
 
@@ -15,21 +15,21 @@ class Client {
         this.name = name;
         this.id = socket.id;
 
-        this.startSocketListeners();
+        this.startSocketListeners(socket);
 
         socket.inLobby = true;
     }
 
-    startSocketListeners() {
+    startSocketListeners(socket) {
         socket.on('disconnect', () => {
-            lobby.leave(this);
+            this.lobby.leave(this);
         });
 
         socket.on(lobbyEventsEnum.connection.leave, () => {
             socket.inLobby = false;
-            socket.leave(lobby.id);
+            socket.leave(this.lobby.id);
             this.stopSocketListeners();
-            lobby.leave(this);
+            this.lobby.leave(this);
         });
 
         this.socket.on(lobbyEventsEnum.peerConnection.gotCandidate, (toId, candidate) => this.gotCandidate(toId, candidate));
@@ -38,14 +38,14 @@ class Client {
     }
 
     stopSocketListeners() {
-        this.socket.off(lobbyEventsEnum.peerConnection.gotCandidate);
-        this.socket.off(lobbyEventsEnum.peerConnection.gotOffer);
-        this.socket.off(lobbyEventsEnum.peerConnection.gotAnswer);
+        this.socket.removeAllListeners(lobbyEventsEnum.peerConnection.gotCandidate);
+        this.socket.removeAllListeners(lobbyEventsEnum.peerConnection.gotOffer);
+        this.socket.removeAllListeners(lobbyEventsEnum.peerConnection.gotAnswer);
     }
 
     // Active methods
     sendCandidate(fromId, candidate) {
-        this.socket.emit(lobbyEventsEnum.peerConnection.gotCandidate, fromId, candidate);
+        this.socket.emit(lobbyEventsEnum.peerConnection.sendCandidate, fromId, candidate);
     }
 
     requestOffer(id) {
@@ -53,29 +53,29 @@ class Client {
     }
 
     sendOffer(fromId, offer) {
-        this.socket.emit(lobbyEventsEnum.peerConnection.gotOffer, fromId, offer);
+        this.socket.emit(lobbyEventsEnum.peerConnection.sendOffer, fromId, offer);
     }
 
     sendAnswer(fromId, answer) {
-        this.socket.emit(lobbyEventsEnum.peerConnection.gotAnswer, fromId, answer);
+        this.socket.emit(lobbyEventsEnum.peerConnection.sendAnswer, fromId, answer);
     }
 
 
     // Listeners
     gotCandidate(toId, candidate) {
-        if (typeof toId === 'string' && typeof candidate === 'string' && this.lobby.hasUser(toId) && toId !== this.id) {
+        if (typeof toId === 'string' && typeof candidate === 'object' && this.lobby.hasUser(toId) && toId !== this.id) {
             this.lobby.getUser(toId).sendCandidate(this.id, candidate);
         }
     }
 
     gotOffer(toId, offer) {
-        if (typeof toId === 'string' && typeof offer === 'string' && this.lobby.hasUser(toId) && toId !== this.id) {
+        if (typeof toId === 'string' && typeof offer === 'object' && this.lobby.hasUser(toId) && toId !== this.id) {
             this.lobby.getUser(toId).sendOffer(this.id, offer);
         }
     }
 
     gotAnswer(toId, answer) {
-        if (typeof toId === 'string' && typeof answer === 'string' && this.lobby.hasUser(toId) && toId !== this.id) {
+        if (typeof toId === 'string' && typeof answer === 'object' && this.lobby.hasUser(toId) && toId !== this.id) {
             this.lobby.getUser(toId).sendAnswer(this.id, answer);
         }
     }

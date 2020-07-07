@@ -8,10 +8,13 @@ const socketMiddleware = () => {
     const socket = io(endpoint);
 
     return ({ dispatch, getState }) => next => action => {
+        let removeListeners, password, name;
         switch (action.type) {
             case menuEvents.createLobby:
-                let { maxCapacity, password, name } = action;
-                let removeListeners = () => {
+                let { maxCapacity } = action;
+                password = action.password;
+                name = action.name;
+                removeListeners = () => {
                     socket.off(lobbyEvents.connection.created);
                     socket.off(menuEvents.createLobbyError);
                 }
@@ -25,7 +28,7 @@ const socketMiddleware = () => {
                     action.myId = socket.id;
                     removeListeners();
 
-                    setUpListenersForLobby(socket, dispatch);
+                    setUpListenersForLobby(socket, dispatch, getState);
 
                     return next(action);
                 });
@@ -39,24 +42,21 @@ const socketMiddleware = () => {
 
             case menuEvents.joinLobby:
                 let { id } = action;
-                password = action.password;
-                name = action.name;
                 removeListeners = () => {
                     socket.off(menuEvents.joinLobbyError);
                     socket.off(lobbyEvents.connection.join);
                 }
 
-                socket.emit(menuEvents.joinLobby, name, id, password);
+                socket.emit(menuEvents.joinLobby, action.name, id, action.password);
                 socket.on(lobbyEvents.connection.join, (members, admin) => {
                     action.success = true;
                     action.members = members;
                     action.admin = admin;
                     action.myId = socket.id;
-                    console.log(action.members);
 
                     removeListeners();
 
-                    setUpListenersForLobby(socket, dispatch);
+                    setUpListenersForLobby(socket, dispatch, getState);
 
                     return next(action);
                 });
@@ -75,20 +75,41 @@ const socketMiddleware = () => {
 
                 //Disable listeners for the lobby we're leaving
                 socket.off(lobbyEvents.members.newMember);
-                socket.off(lobbyEventsEnum.connection.leave);
-                socket.off(lobbyEventsEnum.connection.newAdmin);
+                socket.off(lobbyEvents.connection.leave);
+                socket.off(lobbyEvents.connection.newAdmin);
 
                 return next(action);
 
+            case lobbyEvents.peerConnection.sendCandidate:
+                socket.emit()
+                return next(action);
             default:
                 return next(action);
         }
     };
 }
 
-function setUpListenersForLobby(socket, dispatch) {
-    socket.on(lobbyEvents.members.newMember, member => {
-        dispatch({ type: lobbyEvents.members.newMember, member: member });
+async function setUpListenersForLobby(socket, dispatch, getState) {
+    socket.on(lobbyEvents.members.newMember, newMember => {
+        dispatch({ type: lobbyEvents.members.newMember, member: newMember });
+        getState().lobby.members.forEach(member => {
+            if (member.id === newMember.id) {
+                member.peerConnection.onicecandidate = event => {
+                    if (event.candidate) {
+                        socket.emit(lobbyEvents.peerConnection.gotCandidate, member.id, event.candidate);
+                    }
+                };
+                navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+                    stream.getTracks().forEach(track => {
+                        member.peerConnection.addTrack(track);
+                    })
+                });
+                member.peerConnection.ontrack = e => {
+                    console.log('new track')
+                    member.mediaStream.addTrack(e.track);
+                }
+            }
+        })
     });
 
     socket.on(lobbyEvents.members.memberLeft, id => {
@@ -99,20 +120,60 @@ function setUpListenersForLobby(socket, dispatch) {
         dispatch({ type: lobbyEvents.connection.newAdmin, id });
     });
 
-    socket.on(lobbyEvents.peerConnection.offerRequested, () => {
+    socket.on(lobbyEvents.peerConnection.offerRequested, id => {
+        dispatch({ type: lobbyEvents.peerConnection.create, id });
+        getState().lobby.members.forEach(async member => {
+            if (member.id === id) {
+                member.peerConnection.onicecandidate = event => {
+                    if (event.candidate) {
+                        socket.emit(lobbyEvents.peerConnection.gotCandidate, member.id, event.candidate);
+                    }
+                }
 
+                member.peerConnection.ontrack = e => {
+                    console.log('new track')
+                    member.mediaStream.addTrack(e.track);
+                }
+
+                navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(async stream => {
+                    stream.getTracks().forEach(track => {
+                        member.peerConnection.addTrack(track);
+                    });
+
+
+                    const offer = await member.peerConnection.createOffer();
+                    await member.peerConnection.setLocalDescription(offer);
+
+                    socket.emit(lobbyEvents.peerConnection.gotOffer, id, offer);
+                });
+
+
+            }
+        })
     });
 
-    socket.on(lobbyEvents.peerConnection.gotAnswer, (from, answer) => {
-
+    socket.on(lobbyEvents.peerConnection.sendAnswer, (id, answer) => {
+        getState().lobby.members.forEach(async member => {
+            if (member.id === id) {
+                await member.peerConnection.setRemoteDescription(new RTCSessionDescription(answer))
+            }
+        })
     });
 
-    socket.on(lobbyEvents.peerConnection.gotCandidate, (from, candidate) => {
-
+    socket.on(lobbyEvents.peerConnection.sendCandidate, (id, candidate) => {
+        dispatch({ type: lobbyEvents.peerConnection.sendCandidate, id, candidate })
     });
 
-    socket.on(lobbyEvents.peerConnection.gotOffer, (from, offer) => {
+    socket.on(lobbyEvents.peerConnection.sendOffer, (id, offer) => {
+        getState().lobby.members.forEach(async member => {
+            if (member.id === id) {
+                member.peerConnection.setRemoteDescription(new RTCSessionDescription(offer))
+                const answer = await member.peerConnection.createAnswer();
+                await member.peerConnection.setLocalDescription(answer);
 
+                socket.emit(lobbyEvents.peerConnection.gotAnswer, id, answer);
+            }
+        })
     })
 }
 
