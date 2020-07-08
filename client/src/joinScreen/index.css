@@ -1,0 +1,121 @@
+.joinscreen-container {
+    height: 500px;
+    width: 700px;
+    border: 6px solid #65FF9E;
+    box-shadow: 0 0 20px 1px #65FF9E;
+    border-radius: 10px;
+    background: #238A49;
+    animation: popup 0.3s ease-out;
+    position: relative;
+
+}
+
+@keyframes popup {
+    from {
+        transform: scale(.4);
+        top: 30px;
+    }
+
+    to {
+        transform: scale(1);
+        top: 0;
+    }
+}
+
+/** Main menu **/
+.main-menu {
+    height: 500px;
+    position: relative;
+
+}
+
+.main-menu .welcome-text {
+    position: absolute;
+    top: 100px;
+    width: 700px;
+    font-size: 40px;
+    text-align: center;
+}
+
+#goToCreatingRoom {
+    position: absolute;
+    left: 100px;
+    bottom: 100px;
+}
+
+#goToJoiningRoom {
+    position: absolute;
+    right: 100px;
+    bottom: 100px;
+}
+
+/** Creating Room **/
+.create-room {
+    height: 500px;
+    position: relative;
+}
+
+.create-room-text {
+    position: absolute;
+    top: 70px;
+    width: 700px;
+    font-size: 40px;
+    text-align: center;
+}
+
+#createRoomName {
+    position: absolute;
+    top: 175px;
+    left: 100px;
+}
+
+#createRoomPassword {
+    position: absolute;
+    top: 275px;
+    left: 100px;
+}
+
+#createRoom {
+    position: absolute;
+    left: 250px;
+    bottom: 70px;
+}
+
+/** Joining Room **/
+.join-room {
+    height: 500px;
+    position: relative;
+}
+
+.join-room-text {
+    position: absolute;
+    top: 70px;
+    width: 700px;
+    font-size: 40px;
+    text-align: center;
+}
+
+#joinRoomName,
+#joinRoomPassword,
+#joinLobbyId {
+    position: absolute;
+    left: 100px;
+}
+
+#joinLobbyId {
+    top: 150px;
+}
+
+#joinRoomName {
+    top: 225px;
+}
+
+#joinRoomPassword {
+    top: 300px;
+}
+
+#joinRoom {
+    position: absolute;
+    left: 250px;
+    bottom: 70px;
+}

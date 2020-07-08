@@ -1,0 +1,22 @@
+.textinput {
+    background: rgb(35, 111, 108);
+    border: solid 2px #65FF9E;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color: white;
+    transition: box-shadow 0.1s;
+    height: 30px;
+    border-radius: 15px;
+    padding-left: 8px;
+    font-size: 18px;
+    color: #E6DDDD;
+    letter-spacing: .5px;
+}
+
+.textinput::placeholder {
+    color: #b3b3b3;
+}
+
+.textinput:hover,
+.textinput:focus {
+    box-shadow: 0 0 16px 1px #65FF9E;
+}

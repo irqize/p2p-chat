@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@300&display=swap');
+
+.app-button {
+    width: 200px;
+    height: 43px;
+    position: relative;
+    cursor: pointer;
+}
+
+.app-button .app-button-background {
+    height: 40px;
+    width: 200px;
+    background: #65FF9E;
+    box-shadow: 0 0 16px 1px #65FF9E;
+    z-index: 0;
+    border-radius: 40px;
+    transition: box-shadow 0.1s ease-out;
+}
+
+.app-button .app-button-foreground {
+    position: relative;
+    top: -37px;
+    height: 40px;
+    line-height: 40px;
+    width: 200px;
+    border-radius: 40px;
+    background: #238A49;
+    color: #65FF9E;
+    font-size: 30px;
+    z-index: 1;
+    text-align: center;
+    transition: top 0.1s ease-out;
+
+}
+
+.app-button:hover .app-button-background {
+    box-shadow: 0 0 6px 1px #65FF9E;
+}
+
+.app-button:hover .app-button-foreground {
+    top: -39px;
+}
