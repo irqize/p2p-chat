@@ -99,10 +99,8 @@ async function setUpListenersForLobby(socket, dispatch, getState) {
                         socket.emit(lobbyEvents.peerConnection.gotCandidate, member.id, event.candidate);
                     }
                 };
-                navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-                    stream.getTracks().forEach(track => {
-                        member.peerConnection.addTrack(track);
-                    })
+                getState().stream.getTracks().forEach(track => {
+                    member.peerConnection.addTrack(track);
                 });
                 member.peerConnection.ontrack = e => {
                     console.log('new track')
@@ -131,21 +129,19 @@ async function setUpListenersForLobby(socket, dispatch, getState) {
                 }
 
                 member.peerConnection.ontrack = e => {
-                    console.log('new track')
                     member.mediaStream.addTrack(e.track);
                 }
 
-                navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(async stream => {
-                    stream.getTracks().forEach(track => {
-                        member.peerConnection.addTrack(track);
-                    });
 
-
-                    const offer = await member.peerConnection.createOffer();
-                    await member.peerConnection.setLocalDescription(offer);
-
-                    socket.emit(lobbyEvents.peerConnection.gotOffer, id, offer);
+                getState().stream.getTracks().forEach(track => {
+                    member.peerConnection.addTrack(track);
                 });
+
+
+                const offer = await member.peerConnection.createOffer();
+                await member.peerConnection.setLocalDescription(offer);
+
+                socket.emit(lobbyEvents.peerConnection.gotOffer, id, offer);
 
 
             }

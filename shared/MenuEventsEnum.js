@@ -16,7 +16,8 @@ const enums = {
         alreadyInLobby: 'already in lobby',
         badPassword: 'bad password',
         nameNotSpecified: 'name wasnt specified'
-    }
+    },
+    requestStream: 'request stream'
 }
 
 module.exports = Object.freeze(enums);

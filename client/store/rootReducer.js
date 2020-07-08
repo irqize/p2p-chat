@@ -9,6 +9,7 @@ const initialState = {
     createLobbyError: null,
     myId: null,
     myName: null,
+    stream: null,
     lobby: null
 }
 
@@ -16,6 +17,7 @@ export default function (state = initialState, action) {
     let newState = { ...initialState }
     switch (action.type) {
         case menuEvents.createLobby:
+            newState = { ...state };
             if (action.success) {
                 newState.inLobby = true;
                 newState.myName = action.name;
@@ -32,6 +34,7 @@ export default function (state = initialState, action) {
             return newState;
 
         case menuEvents.joinLobby:
+            newState = { ...state };
             if (action.success) {
                 newState.inLobby = true;
                 newState.myId = action.myId;
@@ -95,6 +98,12 @@ export default function (state = initialState, action) {
             })
 
             return newState;
+        case menuEvents.requestStream:
+            newState = { ...state };
+
+            newState.stream = action.stream;
+
+            return newState
         default:
             return state;
     }

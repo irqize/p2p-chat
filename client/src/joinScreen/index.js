@@ -7,7 +7,7 @@ import './index.css';
 import Button from '../reusable/button';
 import TextInput from '../reusable/textInput'
 
-import menuEvents from '../../../shared/MenuEventsEnum'
+import menuEvents, { requestStream } from '../../../shared/MenuEventsEnum'
 import { siteName } from '../../../shared/config'
 
 const stateEnum = {
@@ -44,6 +44,23 @@ const JoinScreen = (props) => {
         }
     }, [menuState])
 
+    const joinLobby = () => {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+            console.log(stream);
+            props.requestStream(stream);
+            props.joinLobby(name, lobbyId, password == '' ? null : password);
+        });
+    }
+
+    const createLobby = () => {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+            console.log(stream);
+
+            props.requestStream(stream);
+            props.createLobby(name, Number.MAX_VALUE, password == '' ? null : password);
+        });
+    }
+
     const getContent = () => {
         switch (menuState) {
             case stateEnum.mainMenu:
@@ -59,7 +76,7 @@ const JoinScreen = (props) => {
                     <div className="create-room-text">Create the chatroom</div>
                     <TextInput id="createRoomName" width={500} placeholder="Your name" onChange={handleNameChange} />
                     <TextInput id="createRoomPassword" width={500} placeholder="Password (optional)" onChange={handlePasswordChange} />
-                    <Button id="createRoom" text="CREATE ROOM" clickAction={() => props.createLobby(name, Number.MAX_VALUE, password == '' ? null : password)} />
+                    <Button id="createRoom" text="CREATE ROOM" clickAction={createLobby} />
                 </div>);
             case stateEnum.joiningRoom:
                 return (<div className="join-room">
@@ -67,7 +84,7 @@ const JoinScreen = (props) => {
                     <TextInput value={lobbyId} id="joinLobbyId" width={500} placeholder="Lobby ID" onChange={handleLobbyIdChange} />
                     <TextInput id="joinRoomName" width={500} placeholder="Your name" onChange={handleNameChange} />
                     <TextInput value={password} id="joinRoomPassword" width={500} placeholder="Password (optional)" onChange={handlePasswordChange} />
-                    <Button id="joinRoom" text="JOIN ROOM" clickAction={() => props.joinLobby(name, lobbyId, password == '' ? null : password)} />
+                    <Button id="joinRoom" text="JOIN ROOM" clickAction={joinLobby} />
 
                 </div>);
         }
@@ -84,7 +101,8 @@ const JoinScreen = (props) => {
 function mapDispatchToProps(dispatch) {
     return {
         createLobby: (name, maxCapacity, password = null) => dispatch({ type: menuEvents.createLobby, maxCapacity, password, name }),
-        joinLobby: (name, id, password = null) => dispatch({ type: menuEvents.joinLobby, id, password, name })
+        joinLobby: (name, id, password = null) => dispatch({ type: menuEvents.joinLobby, id, password, name }),
+        requestStream: (stream) => dispatch({ type: menuEvents.requestStream, stream })
     }
 }
 

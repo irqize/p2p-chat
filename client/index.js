@@ -7,7 +7,6 @@ import "./styles.css";
 import store from './store'
 
 import App from './src/App'
-import Lobby from './src/lobby'
 
 ReactDOM.render((
     <Provider store={store}>
