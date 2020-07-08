@@ -1,0 +1,63 @@
+#app {
+    align-items: initial;
+}
+
+.line {
+    height: 5px;
+    background: #65FF9E;
+}
+
+.line.top {
+    box-shadow: 0 4px 10px -1px #65FF9E;
+}
+
+.line.bottom {
+    box-shadow: 0 -4px 10px -1px #65FF9E;
+}
+
+/** TOP BAR **/
+.lobby-top-bar {
+    height: 50px;
+    line-height: 50px;
+    flex: initial 0 100%;
+    background: #238A49;
+    font-size: 20px;
+}
+
+.lobby-top-bar #lobbyId {
+    float: left;
+    padding-left: 20px;
+    display: inline;
+}
+
+.lobby-top-bar #connectedClients {
+    float: right;
+    padding-right: 20px;
+    display: inline;
+
+}
+
+/** MAIN PART **/
+.lobby-cameras {
+    flex: 1;
+}
+
+/** BOTTOM BAR **/
+.lobby-bottom-bar {
+    height: 100px;
+    background: #238A49;
+    flex: initial 0 100%;
+    position: relative;
+}
+
+#lobby-leave-button {
+    position: absolute;
+    left: 20px;
+    top: 30px;
+}
+
+#lobby-copy-link {
+    position: absolute;
+    left: 240px;
+    top: 30px;
+}

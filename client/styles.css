@@ -7,9 +7,10 @@ body {
     background: rgb(35, 111, 108);
     font-family: 'Barlow Semi Condensed', sans-serif;
     color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+}
+
+#app {
+    height: 100%;
 }
 
 input[type="text"],

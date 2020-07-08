@@ -3,13 +3,18 @@ import { connect } from 'react-redux'
 import Lobby from './lobby'
 import JoinScreen from './joinScreen'
 
+import './app.css'
+
 const App = (props) => {
-    const CurrentView = props.inLobby ? Lobby : JoinScreen;
-    return (
-        <>
-            <CurrentView />
-        </>
-    )
+    if (props.inLobby) {
+        return (<div className="lobbyContainer">
+            <Lobby />
+        </div>)
+    } else {
+        return (<div className="joinScreenContainer">
+            <JoinScreen />
+        </div>)
+    }
 }
 
 function mapStateToProps(state) {

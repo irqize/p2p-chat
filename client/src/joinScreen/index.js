@@ -55,7 +55,7 @@ const JoinScreen = (props) => {
                     <TextInput id="joinLobbyId" width={500} placeholder="Lobby ID" onChange={handleLobbyIdChange} />
                     <TextInput id="joinRoomName" width={500} placeholder="Your name" onChange={handleNameChange} />
                     <TextInput id="joinRoomPassword" width={500} placeholder="Password (optional)" onChange={handlePasswordChange} />
-                    <Button id="joinRoom" text="JOIN ROOM" clickAction={() => props.joinLobby(name, lobbyId, Number.MAX_VALUE, password == '' ? null : password)} />
+                    <Button id="joinRoom" text="JOIN ROOM" clickAction={() => props.joinLobby(name, lobbyId, password == '' ? null : password)} />
 
                 </div>);
         }
