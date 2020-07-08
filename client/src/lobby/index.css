@@ -67,3 +67,12 @@
     left: 240px;
     top: 30px;
 }
+
+#user-video {
+    height: 90px;
+    position: absolute;
+    right: 20px;
+    top: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 6px #174240;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import lobbyEvents from '../../../shared/LobbyEventsEnum'
 
@@ -15,6 +15,15 @@ const Lobby = props => {
             return <Client key={member.id} data={member} />
         }));
     }, [props.lobby]);
+
+    const userVideo = useRef(null)
+    useEffect(() => {
+        if (!userVideo.current) return;
+        userVideo.current.muted = true;
+        userVideo.current.autoplay = true;
+        userVideo.current.srcObject = props.stream;
+
+    });
 
     const getShareLink = () => {
         if (props.lobby.password) {
@@ -39,6 +48,7 @@ const Lobby = props => {
             <div className="lobby-bottom-bar">
                 <Button id="lobby-leave-button" text="LEAVE ROOM" clickAction={props.leave} />
                 <Button id="lobby-copy-link" text="COPY LINK" clickAction={() => { navigator.clipboard.writeText(getShareLink()) }} />
+                <video id="user-video" ref={userVideo} />
             </div>
         </>
     )
@@ -46,7 +56,8 @@ const Lobby = props => {
 
 const mapStateToProps = state => {
     return {
-        lobby: state.lobby
+        lobby: state.lobby,
+        stream: state.stream
     }
 }
 

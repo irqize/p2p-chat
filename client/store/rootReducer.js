@@ -51,6 +51,9 @@ export default function (state = initialState, action) {
 
             return newState;
         case lobbyEvents.connection.leave:
+            state.stream.getTracks().forEach(track => {
+                track.stop();
+            });
             return newState;
         case lobbyEvents.members.newMember:
             newState = { ...state };
