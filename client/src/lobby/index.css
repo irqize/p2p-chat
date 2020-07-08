@@ -5,6 +5,7 @@
 .line {
     height: 5px;
     background: #65FF9E;
+    flex: 0 0 5px;
 }
 
 .line.top {
@@ -19,7 +20,7 @@
 .lobby-top-bar {
     height: 50px;
     line-height: 50px;
-    flex: initial 0 100%;
+    flex: 0 0 50px;
     background: #238A49;
     font-size: 20px;
 }
@@ -39,14 +40,19 @@
 
 /** MAIN PART **/
 .lobby-cameras {
-    flex: 1;
+    flex: 1 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
 }
 
 /** BOTTOM BAR **/
 .lobby-bottom-bar {
     height: 100px;
+    flex: 0 0 100px;
     background: #238A49;
-    flex: initial 0 100%;
+    flex: 0 0 100px;
     position: relative;
 }
 

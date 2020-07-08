@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 
+import './client.css'
+
 const Client = (props) => {
     const videoRef = useRef(null);
     useEffect(() => {
@@ -9,7 +11,7 @@ const Client = (props) => {
     }, [props.data.mediaStream])
 
     return (
-        <div>
+        <div className="user-video">
             <video ref={videoRef} />
         </div>
     )

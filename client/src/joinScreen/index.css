@@ -5,21 +5,7 @@
     box-shadow: 0 0 20px 1px #65FF9E;
     border-radius: 10px;
     background: #238A49;
-    animation: popup 0.3s ease-out;
     position: relative;
-
-}
-
-@keyframes popup {
-    from {
-        transform: scale(.4);
-        top: 30px;
-    }
-
-    to {
-        transform: scale(1);
-        top: 0;
-    }
 }
 
 /** Main menu **/
