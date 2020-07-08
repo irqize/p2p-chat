@@ -11,9 +11,16 @@ const App = (props) => {
             <Lobby />
         </div>)
     } else {
-        return (<div className="joinScreenContainer">
-            <JoinScreen />
-        </div>)
+        if (props.isjoinlink) {
+            return (<div className="joinScreenContainer">
+                <JoinScreen isjoinlink={1} />
+            </div>)
+        } else {
+            return (<div className="joinScreenContainer">
+                <JoinScreen isjoinlink={0} />
+            </div>)
+        }
+
     }
 }
 

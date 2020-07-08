@@ -1,6 +1,7 @@
 const config = {
-    endpoint: 'http://127.0.0.1:3000',
-    siteName: 'p33r.chat'
+    endpoint: 'http://localhost:3000/',
+    siteName: 'p33r.chat',
+    domain: 'http://localhost:8080/'
 };
 
 

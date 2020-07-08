@@ -13,11 +13,11 @@ ReactDOM.render((
     <Provider store={store}>
         <BrowserRouter>
             <Switch>
-                <Route path="/join/:lobbyId">
-                    <Lobby />
+                <Route path="/join">
+                    <App isjoinlink={1} />
                 </Route>
                 <Route path="/">
-                    <App />
+                    <App isjoinlink={0} />
                 </Route>
             </Switch>
         </BrowserRouter>

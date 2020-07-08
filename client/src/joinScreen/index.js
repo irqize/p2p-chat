@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import * as qs from 'query-string';
 
 import './index.css';
 
@@ -22,14 +23,25 @@ const JoinScreen = (props) => {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
 
+    useEffect(() => {
+        if (props.isjoinlink) {
+            changeMenuState(stateEnum.joiningRoom);
+            const params = qs.parse(location.search);
+            if (params.lobbyId) setLobbyId(params.lobbyId);
+            if (params.password) setPassword(params.password);
+        }
+    });
+
     const handleNameChange = e => setName(e.target.value);
     const handleLobbyIdChange = e => setLobbyId(e.target.value)
     const handlePasswordChange = e => setPassword(e.target.value);
 
     useEffect(() => {
-        setLobbyId('');
-        setName('');
-        setPassword('')
+        if (!props.isjoinlink) {
+            setLobbyId('');
+            setName('');
+            setPassword('')
+        }
     }, [menuState])
 
     const getContent = () => {
@@ -52,9 +64,9 @@ const JoinScreen = (props) => {
             case stateEnum.joiningRoom:
                 return (<div className="join-room">
                     <div className="join-room-text">Join the chatroom</div>
-                    <TextInput id="joinLobbyId" width={500} placeholder="Lobby ID" onChange={handleLobbyIdChange} />
+                    <TextInput value={lobbyId} id="joinLobbyId" width={500} placeholder="Lobby ID" onChange={handleLobbyIdChange} />
                     <TextInput id="joinRoomName" width={500} placeholder="Your name" onChange={handleNameChange} />
-                    <TextInput id="joinRoomPassword" width={500} placeholder="Password (optional)" onChange={handlePasswordChange} />
+                    <TextInput value={password} id="joinRoomPassword" width={500} placeholder="Password (optional)" onChange={handlePasswordChange} />
                     <Button id="joinRoom" text="JOIN ROOM" clickAction={() => props.joinLobby(name, lobbyId, password == '' ? null : password)} />
 
                 </div>);

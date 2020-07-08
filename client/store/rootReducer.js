@@ -23,7 +23,8 @@ export default function (state = initialState, action) {
                 newState.lobby = {
                     id: action.id,
                     members: [],
-                    admin: action.id
+                    admin: action.myId,
+                    password: action.password
                 }
             } else {
                 newState.createLobbyError = action.error;
@@ -38,7 +39,8 @@ export default function (state = initialState, action) {
                 newState.lobby = {
                     id: action.id,
                     members: action.members,
-                    admin: action.admin
+                    admin: action.admin,
+                    password: action.password
                 }
             } else {
                 newState.joinLobbyError = action.error;

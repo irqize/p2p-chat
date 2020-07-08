@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import lobbyEvents from '../../../shared/LobbyEventsEnum'
 
+import { domain } from '../../../shared/config'
 import Button from '../reusable/button'
 import './index.css'
 
@@ -14,6 +15,15 @@ const Lobby = props => {
             return <Client key={member.id} data={member} />
         }));
     }, [props.lobby]);
+
+    const getShareLink = () => {
+        if (props.lobby.password) {
+            return domain + 'join?lobbyId=' + props.lobby.id + '&password' + props.lobby.password;
+        }
+        else {
+            return domain + 'join?lobbyId=' + props.lobby.id;
+        }
+    }
 
     return (
         <>
@@ -28,7 +38,7 @@ const Lobby = props => {
             <div className="line bottom"></div>
             <div className="lobby-bottom-bar">
                 <Button id="lobby-leave-button" text="LEAVE ROOM" clickAction={props.leave} />
-                <Button id="lobby-copy-link" text="COPY LINK" clickAction={() => { }} />
+                <Button id="lobby-copy-link" text="COPY LINK" clickAction={() => { navigator.clipboard.writeText(getShareLink()) }} />
             </div>
         </>
     )
