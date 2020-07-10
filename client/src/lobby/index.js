@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import lobbyEvents from '../../../shared/LobbyEventsEnum'
+import { ToastProvider, useToasts } from 'react-toast-notifications'
+
 
 import { domain } from '../../../shared/config'
 import Button from '../reusable/button'
@@ -15,6 +17,8 @@ const Lobby = props => {
             return <Client key={member.id} data={member} />
         }));
     }, [props.lobby]);
+
+
 
     const userVideo = useRef(null)
     useEffect(() => {
@@ -34,6 +38,8 @@ const Lobby = props => {
         }
     }
 
+    const { addToast } = useToasts();
+
     return (
         <>
             <div className="lobby-top-bar">
@@ -47,7 +53,7 @@ const Lobby = props => {
             <div className="line bottom"></div>
             <div className="lobby-bottom-bar">
                 <Button id="lobby-leave-button" text="LEAVE ROOM" clickAction={props.leave} />
-                <Button id="lobby-copy-link" text="COPY LINK" clickAction={() => { navigator.clipboard.writeText(getShareLink()) }} />
+                <Button id="lobby-copy-link" text="COPY LINK" clickAction={() => { navigator.clipboard.writeText(getShareLink()); addToast('Join link copied to clipboard', { appearance: 'success' }) }} />
                 <video id="user-video" ref={userVideo} />
             </div>
         </>

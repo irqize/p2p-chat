@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import * as qs from 'query-string';
+import { ToastProvider, useToasts } from 'react-toast-notifications'
 
 import './index.css';
 
@@ -32,6 +33,20 @@ const JoinScreen = (props) => {
         }
     });
 
+    // Toast notifications
+    const { addToast } = useToasts()
+    useEffect(() => {
+        if (props.joinLobbyError) {
+            console.log(props.joinLobbyError)
+            addToast(props.joinLobbyError, { appearance: 'error' });
+        }
+    }, [props.joinLobbyError]);
+    useEffect(() => {
+        if (props.createLobbyError) {
+            addToast(props.createLobbyError, { appearance: 'error' });
+        }
+    }, [props.createLobbyError])
+
     const handleNameChange = e => setName(e.target.value);
     const handleLobbyIdChange = e => setLobbyId(e.target.value)
     const handlePasswordChange = e => setPassword(e.target.value);
@@ -58,7 +73,8 @@ const JoinScreen = (props) => {
 
             props.requestStream(stream);
             props.createLobby(name, Number.MAX_VALUE, password == '' ? null : password);
-        });
+
+        }).catch(e => addToast("You need to allow the camera usage to join the videochat.", { appearance: 'error' }));
     }
 
     const getContent = () => {
@@ -98,7 +114,16 @@ const JoinScreen = (props) => {
 
 }
 
-function mapDispatchToProps(dispatch) {
+
+const mapStateToProps = state => {
+    return {
+        createLobbyError: state.createLobbyError,
+        joinLobbyError: state.joinLobbyError
+    }
+
+}
+
+const mapDispatchToProps = dispatch => {
     return {
         createLobby: (name, maxCapacity, password = null) => dispatch({ type: menuEvents.createLobby, maxCapacity, password, name }),
         joinLobby: (name, id, password = null) => dispatch({ type: menuEvents.joinLobby, id, password, name }),
@@ -106,4 +131,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(null, mapDispatchToProps)(JoinScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(JoinScreen);

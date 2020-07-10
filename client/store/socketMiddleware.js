@@ -4,6 +4,8 @@ import { endpoint } from '../../shared/config'
 import menuEvents from '../../shared/MenuEventsEnum'
 import lobbyEvents from '../../shared/LobbyEventsEnum'
 
+
+
 const socketMiddleware = () => {
     const socket = io(endpoint);
 
