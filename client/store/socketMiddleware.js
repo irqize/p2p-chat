@@ -72,7 +72,6 @@ const socketMiddleware = () => {
                 break;
 
             case lobbyEvents.connection.leave:
-                if (!getState().inLobby) return next(action);
                 socket.emit(lobbyEvents.connection.leave);
 
                 //Disable listeners for the lobby we're leaving
