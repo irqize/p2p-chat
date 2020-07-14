@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import * as qs from 'query-string';
+
 import { addNotification } from '../../store/notifications/notificationsActions'
+import { createLobbyAction, joinLobbyAction, requestStreamAction } from '../../store/actions'
 
 import Notifications from '../notifications'
 
@@ -137,9 +139,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        createLobby: (name, maxCapacity, password = null) => dispatch({ type: menuEvents.createLobby, maxCapacity, password, name }),
-        joinLobby: (name, id, password = null) => dispatch({ type: menuEvents.joinLobby, id, password, name }),
-        requestStream: (stream) => dispatch({ type: menuEvents.requestStream, stream }),
+        createLobby: (name, maxCapacity, password) => dispatch(createLobbyAction(name, maxCapacity, password)),
+        joinLobby: (name, id, password) => dispatch(joinLobbyAction(name, id, password)),
+        requestStream: (stream) => dispatch(requestStreamAction(stream)),
         addNotification: (content, isError) => dispatch(addNotification(content, isError))
     }
 }

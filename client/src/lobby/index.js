@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import lobbyEvents from '../../../shared/LobbyEventsEnum'
+
 import { addNotification } from '../../store/notifications/notificationsActions'
+import { leaveLobbyAction } from '../../store/actions'
 
 import Notifications from '../notifications'
 
@@ -70,7 +72,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        leave: () => dispatch({ type: lobbyEvents.connection.leave }),
+        leave: () => dispatch(leaveLobbyAction()),
         addNotification: (content, isError) => dispatch(addNotification(content, isError))
     }
 }
