@@ -1,0 +1,23 @@
+#notifications {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 200px;
+}
+
+.notification {
+    width: 188px;
+    padding: 5px;
+    border-radius: 5px;
+    background: #238A49;
+    border: 1px solid #65FF9E;
+    text-align: center;
+    margin-bottom: 5px;
+
+}
+
+.notification.error {
+    background: #8a3223;
+    border: 1px solid #e26c4e;
+}

@@ -1,0 +1,1 @@
+export const autoDismissTimeout = 4000;

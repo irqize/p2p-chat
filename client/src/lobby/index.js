@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import lobbyEvents from '../../../shared/LobbyEventsEnum'
-import { ToastProvider, useToasts } from 'react-toast-notifications'
+import { addNotification } from '../../store/notifications/notificationsActions'
+
+import Notifications from '../notifications'
 
 
 import { domain } from '../../../shared/config'
@@ -38,8 +40,6 @@ const Lobby = props => {
         }
     }
 
-    const { addToast } = useToasts();
-
     return (
         <>
             <div className="lobby-top-bar">
@@ -48,12 +48,13 @@ const Lobby = props => {
             </div>
             <div className="line top"></div>
             <div className="lobby-cameras">
+                <Notifications />
                 {clients}
             </div>
             <div className="line bottom"></div>
             <div className="lobby-bottom-bar">
                 <Button id="lobby-leave-button" text="LEAVE ROOM" clickAction={props.leave} />
-                <Button id="lobby-copy-link" text="COPY LINK" clickAction={() => { navigator.clipboard.writeText(getShareLink()); addToast('Join link copied to clipboard', { appearance: 'success' }) }} />
+                <Button id="lobby-copy-link" text="COPY LINK" clickAction={() => { navigator.clipboard.writeText(getShareLink()); props.addNotification('Join link copied to clipboard', false) }} />
                 <video id="user-video" ref={userVideo} />
             </div>
         </>
@@ -62,14 +63,15 @@ const Lobby = props => {
 
 const mapStateToProps = state => {
     return {
-        lobby: state.lobby,
-        stream: state.stream
+        lobby: state.main.lobby,
+        stream: state.main.stream
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        leave: () => dispatch({ type: lobbyEvents.connection.leave })
+        leave: () => dispatch({ type: lobbyEvents.connection.leave }),
+        addNotification: (content, isError) => dispatch(addNotification(content, isError))
     }
 }
 

@@ -5,4 +5,12 @@ const config = {
 };
 
 
-module.exports = Object.freeze(config); 
+module.exports = Object.freeze(config);
+
+/*
+const config = {
+    endpoint: 'https://p33r.chat/',
+    siteName: 'p33r.chat',
+    domain: 'https://p33r.chat/'
+};
+*/

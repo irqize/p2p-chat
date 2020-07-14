@@ -25,8 +25,7 @@ const App = (props) => {
 }
 
 function mapStateToProps(state) {
-    const { inLobby } = state;
-    return { inLobby };
+    return { inLobby: state.main.inLobby };
 }
 
 
