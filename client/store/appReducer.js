@@ -1,5 +1,6 @@
 import lobbyEvents from '../../shared/LobbyEventsEnum'
 import menuEvents from '../../shared/MenuEventsEnum'
+import controlsActions from './controls/controlsActionTypes'
 
 import stunConfiguration from './stunConfiguration'
 
@@ -10,7 +11,12 @@ const initialState = {
     myId: null,
     myName: null,
     stream: null,
-    lobby: null
+    lobby: null,
+    controls: {
+        muted: false,
+        silent: false,
+        popup: false
+    }
 }
 
 export default function (state = initialState, action) {
@@ -39,6 +45,7 @@ export default function (state = initialState, action) {
         case menuEvents.joinLobby:
             newState = { ...state };
             if (action.success) {
+                action.members.forEach(member => member.muted = false);
                 newState.inLobby = true;
                 newState.myId = action.myId;
                 newState.myName = action.name;
@@ -62,6 +69,7 @@ export default function (state = initialState, action) {
             });
             return newState;
         case lobbyEvents.members.newMember:
+            action.member.muted = state.controls.silent;
             newState = { ...state };
             newState.lobby = { ...state.lobby }
             newState.lobby.members = [...state.lobby.members, action.member];
@@ -107,12 +115,55 @@ export default function (state = initialState, action) {
             })
 
             return newState;
+
+        case lobbyEvents.members.switchMute:
+            newState = { ...state };
+            newState.lobby = { ...state.lobby };
+            newState.lobby.members = state.lobby.members.map(member => {
+                if (member !== action.member) return { ...member };
+                const newMember = { ...member };
+                newMember.muted = !member.muted;
+                return newMember;
+            });
+
+            return newState
+
+        case lobbyEvents.members.changeMuteAll:
+            newState = { ...state };
+            newState.lobby = { ...state.lobby };
+            newState.lobby.members = state.lobby.members.map(member => {
+                const newMember = { ...member };
+                newMember.muted = action.to;
+                return newMember;
+            });
+            return newState;
+
         case menuEvents.requestStream:
             newState = { ...state };
 
             newState.stream = action.stream;
 
+            return newState;
+
+        case controlsActions.changeMute:
+            newState = { ...state };
+            newState.controls = { ...state.controls };
+            newState.controls.muted = action.to;
             return newState
+
+        case controlsActions.changeSilent:
+            newState = { ...state };
+            newState.controls = { ...state.controls };
+            newState.controls.silent = action.to;
+            newState.stream.muted = action.to;
+            return newState
+
+        case controlsActions.changePopup:
+            newState = { ...state };
+            newState.controls = { ...state.controls };
+            newState.controls.popup = action.to;
+            return newState
+
         default:
             return state;
     }

@@ -1,0 +1,86 @@
+#controls {
+  width: 260px;
+  height: 50px;
+}
+
+.control {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  box-shadow: black 0 0 19px 0px;
+  transition: all 0.1s ease-out;
+  background: #efeaea;
+  cursor: pointer;
+}
+
+.control.active {
+  background: #ea7a7a;
+}
+
+#add.active {
+  transform: rotate(-45deg);
+}
+
+.control:not(:first-child) {
+  margin-left: 20px;
+}
+
+#popup-container {
+  position: absolute;
+  bottom: 58px;
+  left: 25px;
+  width: 0;
+  height: 0;
+  transition: all 0.1s ease-out;
+}
+
+#popup-container.active {
+  height: 90px;
+  width: 320px;
+  left: -135px;
+}
+
+#popup-container.active #popup {
+  transform: scale(1);
+  height: 80px;
+  width: 320px;
+  opacity: 1;
+}
+
+#popup {
+  box-shadow: black 0 0 19px 0px;
+  height: 0;
+  width: 0;
+  line-height: 30px;
+  color: black;
+  background: #EFEAEA;
+  text-align: center;
+  border-radius: 5px;
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.1s ease-out;
+}
+
+#popup div:first-of-type {
+  padding-top: 10px;
+}
+
+#popup:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #EFEAEA;
+  border-bottom: 0;
+  margin-left: -10px;
+  margin-bottom: -10px;
+}
+
+
+#copy-link {
+  text-decoration: underline;
+  cursor: pointer;
+}

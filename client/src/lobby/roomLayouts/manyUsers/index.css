@@ -1,0 +1,84 @@
+#many-users-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    background: #3A3838;
+    overflow: hidden;
+}
+
+#many-users-container .user {
+    flex: 1 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#many-users-container .user-video {
+    width: 85%;
+    position: relative;
+}
+
+#many-users-container .user-video video {
+    width: 100%;
+    max-height: 100%;
+}
+
+#many-users-container .user-name {
+    position: absolute;
+    top: 0;
+    left: 7.5%;
+    padding-left: 20px;
+    height: 80px;
+    color: white;
+    line-height: 60px;
+    font-size: 30px;
+    background: linear-gradient(black, rgba(0, 0, 0, 0));
+    width: calc(85% - 20px);
+    opacity: 0;
+    transition: all 0.1s ease-out;
+}
+
+#many-users-container .user.active .user-name {
+    opacity: 1;
+}
+
+#many-users-container #my-video {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    height: 135px;
+}
+
+#many-users-container .user-soundcontrol {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    bottom: 20px;
+    left: calc(50% - 25px);
+    background: #efeaea;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.1s ease-out;
+}
+
+#many-users-container .user.active .user-soundcontrol {
+    opacity: 1;
+}
+
+#many-users-container .user-soundcontrol.muted {
+    background: #ea7a7a;
+}
+
+#controls {
+    position: absolute;
+    bottom: 20px;
+    left: calc(50% - 130px);
+}

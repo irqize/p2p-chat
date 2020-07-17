@@ -23,3 +23,13 @@ export const requestStreamAction = stream => ({
     type: menuEvents.requestStream,
     stream
 });
+
+export const switchMute = member => ({
+    type: lobbyEvents.members.switchMute,
+    member
+});
+
+export const changeMuteAll = to => ({
+    type: lobbyEvents.members.changeMuteAll,
+    to
+});

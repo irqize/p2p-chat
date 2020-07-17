@@ -1,83 +1,105 @@
 .joinscreen-container {
-    height: 500px;
-    width: 700px;
-    border: 6px solid #65FF9E;
-    box-shadow: 0 0 20px 1px #65FF9E;
+    height: 600px;
+    width: 680px;
+    box-shadow: 0 0 20px 1px #000000;
     border-radius: 10px;
-    background: #238A49;
+    background: #EFEAEA;
     position: relative;
+    color: black;
 }
 
 /** Main menu **/
 .main-menu {
-    height: 500px;
+    height: 600px;
     position: relative;
 
 }
 
 .main-menu .welcome-text {
     position: absolute;
-    top: 100px;
-    width: 700px;
-    font-size: 40px;
+    top: 30px;
+    width: 680px;
+    font-size: 60px;
+    text-align: center;
+}
+
+.main-menu .welcome-info {
+    position: absolute;
+    top: 120px;
+    width: 680px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.disclaimer {
+    position: absolute;
+    bottom: 30px;
+    width: 680px;
+    font-size: 16px;
     text-align: center;
 }
 
 #goToCreatingRoom {
     position: absolute;
-    left: 100px;
-    bottom: 100px;
+    left: 90px;
+    bottom: 290px;
 }
 
 #goToJoiningRoom {
     position: absolute;
-    right: 100px;
-    bottom: 100px;
+    left: 90px;
+    bottom: 130px;
 }
 
 /** Creating Room **/
 .create-room {
-    height: 500px;
+    height: 600px;
     position: relative;
 }
 
 .create-room-text {
     position: absolute;
-    top: 70px;
+    top: 40px;
     width: 700px;
-    font-size: 40px;
+    font-size: 60px;
     text-align: center;
 }
 
 #createRoomName {
     position: absolute;
     top: 175px;
-    left: 100px;
+    left: 83px;
 }
 
 #createRoomPassword {
     position: absolute;
     top: 275px;
-    left: 100px;
+    left: 83px;
+}
+
+#goBack {
+    position: absolute;
+    bottom: 120px;
+    left: 83px;
 }
 
 #createRoom {
     position: absolute;
-    left: 250px;
-    bottom: 70px;
+    bottom: 120px;
+    right: 83px;
 }
 
 /** Joining Room **/
 .join-room {
-    height: 500px;
+    height: 600px;
     position: relative;
 }
 
 .join-room-text {
     position: absolute;
-    top: 70px;
-    width: 700px;
-    font-size: 40px;
+    top: 30px;
+    width: 680px;
+    font-size: 60px;
     text-align: center;
 }
 
@@ -85,7 +107,7 @@
 #joinRoomPassword,
 #joinLobbyId {
     position: absolute;
-    left: 100px;
+    left: 83px;
 }
 
 #joinLobbyId {
@@ -93,15 +115,19 @@
 }
 
 #joinRoomName {
-    top: 225px;
+    top: 235px;
 }
 
 #joinRoomPassword {
-    top: 300px;
+    top: 320px;
+}
+
+.join-room #goBack {
+    bottom: 90px;
 }
 
 #joinRoom {
     position: absolute;
-    left: 250px;
-    bottom: 70px;
+    bottom: 90px;
+    right: 83px;
 }

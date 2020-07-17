@@ -93,18 +93,17 @@ const socketMiddleware = () => {
 async function setUpListenersForLobby(socket, dispatch, getState) {
     socket.on(lobbyEvents.members.newMember, newMember => {
         dispatch({ type: lobbyEvents.members.newMember, member: newMember });
-        getState().lobby.members.forEach(member => {
+        getState().main.lobby.members.forEach(member => {
             if (member.id === newMember.id) {
                 member.peerConnection.onicecandidate = event => {
                     if (event.candidate) {
                         socket.emit(lobbyEvents.peerConnection.gotCandidate, member.id, event.candidate);
                     }
                 };
-                getState().stream.getTracks().forEach(track => {
+                getState().main.stream.getTracks().forEach(track => {
                     member.peerConnection.addTrack(track);
                 });
                 member.peerConnection.ontrack = e => {
-                    console.log('new track')
                     member.mediaStream.addTrack(e.track);
                 }
             }
@@ -121,7 +120,7 @@ async function setUpListenersForLobby(socket, dispatch, getState) {
 
     socket.on(lobbyEvents.peerConnection.offerRequested, id => {
         dispatch({ type: lobbyEvents.peerConnection.create, id });
-        getState().lobby.members.forEach(async member => {
+        getState().main.lobby.members.forEach(async member => {
             if (member.id === id) {
                 member.peerConnection.onicecandidate = event => {
                     if (event.candidate) {
@@ -134,7 +133,7 @@ async function setUpListenersForLobby(socket, dispatch, getState) {
                 }
 
 
-                getState().stream.getTracks().forEach(track => {
+                getState().main.stream.getTracks().forEach(track => {
                     member.peerConnection.addTrack(track);
                 });
 
@@ -150,7 +149,7 @@ async function setUpListenersForLobby(socket, dispatch, getState) {
     });
 
     socket.on(lobbyEvents.peerConnection.sendAnswer, (id, answer) => {
-        getState().lobby.members.forEach(async member => {
+        getState().main.lobby.members.forEach(async member => {
             if (member.id === id) {
                 await member.peerConnection.setRemoteDescription(new RTCSessionDescription(answer))
             }
@@ -162,7 +161,7 @@ async function setUpListenersForLobby(socket, dispatch, getState) {
     });
 
     socket.on(lobbyEvents.peerConnection.sendOffer, (id, offer) => {
-        getState().lobby.members.forEach(async member => {
+        getState().main.lobby.members.forEach(async member => {
             if (member.id === id) {
                 member.peerConnection.setRemoteDescription(new RTCSessionDescription(offer))
                 const answer = await member.peerConnection.createAnswer();

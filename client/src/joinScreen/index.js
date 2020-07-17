@@ -35,7 +35,7 @@ const JoinScreen = (props) => {
             if (params.lobbyId) setLobbyId(params.lobbyId);
             if (params.password) setPassword(params.password);
         }
-    });
+    }, []);
 
     // Toast notifications
     useEffect(() => {
@@ -87,15 +87,17 @@ const JoinScreen = (props) => {
 
     const mainMenu = (<div className="main-menu">
         <div className="welcome-text">Welcome to {siteName}!</div>
-        <Button id="goToJoiningRoom" clickAction={() => changeMenuState(stateEnum.joiningRoom)} text="JOIN ROOM" />
-        <Button id="goToCreatingRoom" clickAction={() => changeMenuState(stateEnum.creatingRoom)} text="CREATE ROOM" />
+        <div className="welcome-info">You can either create new chatroom or join already created one.</div>
+        <Button width={500} id="goToJoiningRoom" clickAction={() => changeMenuState(stateEnum.joiningRoom)} text="JOIN ROOM" />
+        <Button width={500} id="goToCreatingRoom" clickAction={() => changeMenuState(stateEnum.creatingRoom)} text="CREATE ROOM" />
     </div>);
 
     const creatingRoom = (<div className="create-room">
         <div className="create-room-text">Create the chatroom</div>
         <TextInput id="createRoomName" width={500} placeholder="Your name" onChange={handleNameChange} />
         <TextInput id="createRoomPassword" width={500} placeholder="Password (optional)" onChange={handlePasswordChange} />
-        <Button id="createRoom" text="CREATE ROOM" clickAction={createLobby} />
+        <Button id="goBack" width={220} text="GO BACK" clickAction={() => changeMenuState(stateEnum.mainMenu)} />
+        <Button id="createRoom" width={220} text="CREATE" clickAction={createLobby} />
     </div>);
 
     const joiningRoom = (<div className="join-room">
@@ -103,7 +105,8 @@ const JoinScreen = (props) => {
         <TextInput value={lobbyId} id="joinLobbyId" width={500} placeholder="Lobby ID" onChange={handleLobbyIdChange} />
         <TextInput id="joinRoomName" width={500} placeholder="Your name" onChange={handleNameChange} />
         <TextInput value={password} id="joinRoomPassword" width={500} placeholder="Password (optional)" onChange={handlePasswordChange} />
-        <Button id="joinRoom" text="JOIN ROOM" clickAction={joinLobby} />
+        <Button id="goBack" width={220} text="GO BACK" clickAction={() => changeMenuState(stateEnum.mainMenu)} />
+        <Button id="joinRoom" width={220} text="JOIN" clickAction={joinLobby} />
     </div>);
 
     const getContent = () => {
@@ -122,6 +125,7 @@ const JoinScreen = (props) => {
             <Notifications />
             <div className="joinscreen-container">
                 {getContent()}
+                <div className="disclaimer">App is under development. You can submit your ideas <a target="_blank" href="https://github.com/irqize/p2p-chat/issues">here.</a></div>
             </div>
         </>
     )

@@ -7,7 +7,9 @@ const enums = {
     },
     members: {
         newMember: 'new member',
-        memberLeft: 'member left'
+        memberLeft: 'member left',
+        switchMute: 'switch mute',
+        changeMuteAll: 'change mute all'
     },
     peerConnection: {
         create: 'create',

@@ -1,22 +1,21 @@
 .textinput {
-    background: rgb(35, 111, 108);
-    border: solid 2px #65FF9E;
+    background: #EFEAEA;
+    border: solid 1px #707070;
     font-family: 'Barlow Semi Condensed', sans-serif;
-    color: white;
+    color: black;
     transition: box-shadow 0.1s;
-    height: 30px;
-    border-radius: 15px;
+    height: 45px;
+    border-radius: 10px;
     padding-left: 8px;
     font-size: 18px;
-    color: #E6DDDD;
     letter-spacing: .5px;
 }
 
 .textinput::placeholder {
-    color: #b3b3b3;
+    color: #959292;
 }
 
 .textinput:hover,
 .textinput:focus {
-    box-shadow: 0 0 16px 1px #65FF9E;
+    box-shadow: 0 0 8px 0px #000000;
 }
