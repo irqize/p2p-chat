@@ -15,6 +15,7 @@ const manyUsers = (props) => {
 
     useEffect(() => {
         if (!myVideoRef.current) return;
+        myVideoRef.current.muted = true;
         myVideoRef.current.autoplay = true;
         myVideoRef.current.srcObject = props.stream;
     }, [props.stream])

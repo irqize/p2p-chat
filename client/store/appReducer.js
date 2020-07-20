@@ -97,12 +97,15 @@ export default function (state = initialState, action) {
         case lobbyEvents.peerConnection.create:
             newState = { ...state };
 
-            newState.lobby.members.forEach(member => {
+            newState.lobby.members = newState.lobby.members.map(member => {
                 if (member.id === action.id) {
                     member.peerConnection = new RTCPeerConnection(stunConfiguration);
                     member.mediaStream = new MediaStream();
+                    return { ...member }
+                } else {
+                    return member
                 }
-            })
+            });
 
             return newState;
         case lobbyEvents.peerConnection.sendCandidate:

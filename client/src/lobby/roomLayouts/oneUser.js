@@ -19,9 +19,14 @@ const oneUser = props => {
     }, [props.member.mediaStream])
 
     useEffect(() => {
+        if (!userVideoRef.current) return;
+        userVideoRef.current.muted = props.member.muted;
+    }, [props.member])
+
+    useEffect(() => {
         if (!myVideoRef.current) return;
-        myVideoRef.current.srcObject = props.stream;
         myVideoRef.current.muted = true;
+        myVideoRef.current.srcObject = props.stream;
     }, [props.stream]);
 
     const onMouseMove = _ => {
