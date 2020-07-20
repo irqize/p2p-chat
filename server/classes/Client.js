@@ -3,8 +3,7 @@ const lobbyEventsEnum = require('../../shared/LobbyEventsEnum');
 class Client {
     socket;
     id;
-    isStreamingAudio = false;
-    isStreamingVideo = false;
+    silent = false;
     name;
     lobby;
 
@@ -35,6 +34,7 @@ class Client {
         this.socket.on(lobbyEventsEnum.peerConnection.gotCandidate, (toId, candidate) => this.gotCandidate(toId, candidate));
         this.socket.on(lobbyEventsEnum.peerConnection.gotOffer, (toId, offer) => this.gotOffer(toId, offer));
         this.socket.on(lobbyEventsEnum.peerConnection.gotAnswer, (toId, answer) => this.gotAnswer(toId, answer));
+        this.socket.on(lobbyEventsEnum.members.changeSilence, to => this.changeSilence(to))
     }
 
     stopSocketListeners() {
@@ -42,6 +42,7 @@ class Client {
         this.socket.removeAllListeners(lobbyEventsEnum.peerConnection.gotOffer);
         this.socket.removeAllListeners(lobbyEventsEnum.peerConnection.gotAnswer);
     }
+
 
     // Active methods
     sendCandidate(fromId, candidate) {
@@ -82,6 +83,13 @@ class Client {
 
     setAdmin() {
         this.isAdmin = true;
+    }
+
+    changeSilence(to) {
+        if (typeof to !== 'boolean') return;
+
+        this.silent = to;
+        this.lobby.changeSilence(this.id, to);
     }
 }
 

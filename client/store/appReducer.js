@@ -167,6 +167,18 @@ export default function (state = initialState, action) {
             newState.controls.popup = action.to;
             return newState
 
+        case lobbyEvents.members.changeSilence:
+            newState = { ...state }
+            newState.lobby = { ...state.lobby }
+            newState.lobby.members = newState.lobby.members.map(member => {
+                if (member.id !== action.id) return member;
+                const newMember = { ...member }
+                newMember.silent = action.to
+                return newMember;
+            });
+            return newState;
+
+
         default:
             return state;
     }

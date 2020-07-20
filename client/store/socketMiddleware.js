@@ -3,8 +3,7 @@ import { endpoint } from '../../shared/config'
 
 import menuEvents from '../../shared/MenuEventsEnum'
 import lobbyEvents from '../../shared/LobbyEventsEnum'
-
-
+import controlsActions from './controls/controlsActionTypes'
 
 const socketMiddleware = () => {
     const socket = io(endpoint);
@@ -81,8 +80,9 @@ const socketMiddleware = () => {
 
                 return next(action);
 
-            case lobbyEvents.peerConnection.sendCandidate:
-                socket.emit()
+            case controlsActions.changeMute:
+                socket.emit(lobbyEvents.members.changeSilence, action.to)
+
                 return next(action);
             default:
                 return next(action);
@@ -159,6 +159,10 @@ async function setUpListenersForLobby(socket, dispatch, getState) {
     socket.on(lobbyEvents.peerConnection.sendCandidate, (id, candidate) => {
         dispatch({ type: lobbyEvents.peerConnection.sendCandidate, id, candidate })
     });
+
+    socket.on(lobbyEvents.members.changeSilence, (id, to) => {
+        dispatch({ type: lobbyEvents.members.changeSilence, id, to });
+    })
 
     socket.on(lobbyEvents.peerConnection.sendOffer, (id, offer) => {
         getState().main.lobby.members.forEach(async member => {

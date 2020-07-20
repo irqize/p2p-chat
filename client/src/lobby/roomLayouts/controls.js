@@ -11,7 +11,7 @@ import stopcall from './icons/stopcall.svg'
 import './css/controls.css'
 
 import * as controlsActions from '../../../store/controls/controlsActions'
-import { leaveLobbyAction, changeMuteAll } from '../../../store/actions'
+import { leaveLobbyAction, changeMuteAll, changeSilence } from '../../../store/actions'
 import { addNotification } from '../../../store/notifications/notificationsActions'
 
 import { domain } from '../../../../shared/config'

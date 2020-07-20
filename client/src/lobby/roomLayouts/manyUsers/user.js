@@ -12,7 +12,7 @@ const User = (props) => {
     useEffect(() => {
         if (!videoRef.current) return;
         if (!videoRef.current.srcObject) videoRef.current.srcObject = props.user.mediaStream;
-        videoRef.current.muted = props.user.muted
+        videoRef.current.muted = props.user.muted || props.user.silent;
     }, [props.user]);
 
     const onMouseMove = _ => {

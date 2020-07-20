@@ -20,7 +20,7 @@ const oneUser = props => {
 
     useEffect(() => {
         if (!userVideoRef.current) return;
-        userVideoRef.current.muted = props.member.muted;
+        userVideoRef.current.muted = props.member.muted || props.member.silent;
     }, [props.member])
 
     useEffect(() => {

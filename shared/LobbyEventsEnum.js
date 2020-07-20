@@ -10,7 +10,8 @@ const enums = {
         memberLeft: 'member left',
         switchMute: 'switch mute',
         changeMuteAll: 'change mute all',
-        receivedTracks: 'received tracks'
+        receivedTracks: 'received tracks',
+        changeSilence: 'change silence'
     },
     peerConnection: {
         create: 'create peer connection',

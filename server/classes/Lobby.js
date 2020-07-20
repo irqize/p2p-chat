@@ -29,8 +29,7 @@ class Lobby {
         const members = this.users.map(user => ({
             id: user.socket.id,
             name: user.name,
-            isStreamingAudio: user.isStreamingAudio,
-            isStreamingVideo: user.isStreamingVideo,
+            silent: user.silent,
             peerConnection: null,
             mediaStream: null
         }));
@@ -39,8 +38,7 @@ class Lobby {
         this.io.to(this.id).emit(lobbyEventsEnum.members.newMember, {
             id: socket.id,
             name: name,
-            isStreamingAudio: false,
-            isStreamingVideo: false,
+            silent: false,
             peerConnection: null,
             mediaStream: null
         });
@@ -73,6 +71,10 @@ class Lobby {
                 }
             }
         }
+    }
+
+    changeSilence(userId, to) {
+        this.io.to(this.id).emit(lobbyEventsEnum.members.changeSilence, userId, to);
     }
 
     authenticate(password) {
