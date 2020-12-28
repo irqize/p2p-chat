@@ -4,8 +4,10 @@ const { v4 } = require('uuid');
 const Lobby = require('./Lobby');
 const enums = require('../../shared/MenuEventsEnum');
 
+const { port } = require('../config');
+
 class Service {
-    port = 3000;
+    port = port;
     io = null;
 
     lobbies = new Map();

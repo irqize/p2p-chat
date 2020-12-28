@@ -1,5 +1,5 @@
 import React from 'react'
-import './css/textinput.css'
+import './css/textInput.css'
 
 const TextInput = (props) => {
     if (!props.value)
