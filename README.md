@@ -5,7 +5,7 @@ API currently supported by most of the major browsers. Users can create chat roo
 and easily share a link to it for other people to join. Thanks to the network structure
 data send to the server is minimal therefore improving the privacy. The frontend is
 written in Redux and React, the backend uses Node.js and is written in plain javascript
-and uses WebSocket for the connection. App is hosted [here](https://p33r.chat/).
+and uses WebSocket for the connection.
 
 ## Instalation
 
